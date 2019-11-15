@@ -1,0 +1,141 @@
+{
+	"info": {
+		"_postman_id": "f162acb0-24ac-43f4-84ed-7664cb8ac196",
+		"name": "Tuya API for Smart Life App",
+		"description": "Quelle: https://github.com/unparagoned/cloudtuya",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Get Token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "543c4468-323a-4fbc-9726-ebc88a269688",
+						"exec": [
+							"var response = JSON.parse(responseBody);",
+							"",
+							"if(response !== null){",
+							"        tests[\"Body contains access_token\"] = responseBody.has(\"access_token\");",
+							"        pm.environment.set(\"access_token\",response.access_token);",
+							"        pm.environment.set(\"refresh_token\",response.refresh_token);",
+							"}"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "from",
+							"value": "tuya",
+							"type": "text"
+						},
+						{
+							"key": "userName",
+							"value": "{{username}}",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "{{password}}",
+							"type": "text"
+						},
+						{
+							"key": "bizType",
+							"value": "smart_life",
+							"type": "text"
+						},
+						{
+							"key": "countryCode",
+							"value": "{{countryCode}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/homeassistant/auth.do",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"homeassistant",
+						"auth.do"
+					]
+				},
+				"description": "funktioniert mit Smart Life App"
+			},
+			"response": []
+		},
+		{
+			"name": "Find devices",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n      \"header\": {\r\n        \"name\": \"Discovery\",\r\n        \"namespace\": \"discovery\",\r\n        \"payloadVersion\": \"1\"\r\n      },\r\n      \"payload\": {\r\n        \"accessToken\": \"{{access_token}}\"\r\n      }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url}}/homeassistant/skill",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"homeassistant",
+						"skill"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "f8cf970f-d323-42d7-a60e-f7bbac121397",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "21d15ba2-eb22-482c-8a7e-a30554a6d22b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
